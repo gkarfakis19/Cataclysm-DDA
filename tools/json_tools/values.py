@@ -82,3 +82,4 @@ if __name__ == "__main__":
         print(json.dumps(sorted(stats.keys())))
     else:
         print(json.dumps(stats))
+

@@ -49,9 +49,7 @@ static std::string getHeaderGuard( StringRef Filename )
     bool Found = false;
     while( std::string::npos != ( LastSlash = TopDir.find_last_of( "/\\" ) ) ) {
         TopDir = TopDir.substr( 0, LastSlash );
-        // Either the root source dir (containing .travis.yml) or the root build
-        // dir (containing CMakeCache.txt)
-        if( pathExists( TopDir + "/.travis.yml" ) || pathExists( TopDir + "/CMakeCache.txt" ) ) {
+        if( pathExists( TopDir + "/.travis.yml" ) ) {
             Found = true;
             break;
         }

@@ -3312,8 +3312,7 @@ void item::disassembly_info( std::vector<iteminfo> &info, const iteminfo_query *
     const recipe &dis = recipe_dictionary::get_uncraft( typeId() );
     const requirement_data &req = dis.disassembly_requirements();
     if( !req.is_empty() ) {
-        const std::string approx_time = to_string_approx( dis.time_to_craft( get_player_character(),
-                                        recipe_time_flag::ignore_proficiencies ) );
+        const std::string approx_time = to_string_approx( dis.time_to_craft( get_player_character() ) );
 
         const requirement_data::alter_item_comp_vector &comps_list = req.get_components();
         const std::string comps_str = enumerate_as_string( comps_list.begin(), comps_list.end(),
@@ -8658,8 +8657,7 @@ int item::fill_with( const item &contained, const int amount )
         if( count_by_charges ) {
             contained_item.charges = std::min( { amount - num_contained,
                                                  contained_item.charges_per_volume( pocket->remaining_volume() ),
-                                                 contained_item.charges_per_weight( pocket->remaining_weight() )
-                                               } );
+                                                 contained_item.charges_per_weight( pocket->remaining_weight() ) } );
         }
         if( !pocket->insert_item( contained_item ).success() ) {
             if( count_by_charges ) {
@@ -8726,10 +8724,10 @@ bool item::use_charges( const itype_id &what, int &qty, std::list<item> &used,
 
         } else if( e->count_by_charges() ) {
             if( e->typeId() == what ) {
+
                 // if can supply excess charges split required off leaving remainder in-situ
                 item obj = e->split( qty );
                 if( parent ) {
-                    parent->contained_where( *e )->on_contents_changed();
                     parent->on_contents_changed();
                 }
                 if( !obj.is_null() ) {
@@ -10392,8 +10390,7 @@ units::volume item::get_selected_stack_volume( const std::map<const item *, int>
 
 int item::get_recursive_disassemble_moves( const Character &guy ) const
 {
-    int moves = recipe_dictionary::get_uncraft( type->get_id() ).time_to_craft_moves( guy,
-                recipe_time_flag::ignore_proficiencies );
+    int moves = recipe_dictionary::get_uncraft( type->get_id() ).time_to_craft_moves( guy );
     std::vector<item_comp> to_be_disassembled = get_uncraft_components();
     while( !to_be_disassembled.empty() ) {
         item_comp current_comp = to_be_disassembled.back();

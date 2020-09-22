@@ -53,8 +53,7 @@ static void check_lethality( const std::string &explosive_id, const int range, f
             }
             num_subjects++;
             num_subjects_this_time++;
-            monster &new_monster = spawn_test_monster( "mon_zombie", monster_position );
-            new_monster.no_extra_death_drops = true;
+            spawn_test_monster( "mon_zombie", monster_position );
         }
         // Set off an explosion
         item grenade( explosive_id );
