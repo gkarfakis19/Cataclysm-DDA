@@ -1841,10 +1841,17 @@ get_bar( float cur, float max, int width, bool extra_resolution,
     status = status < 0 ? 0 : status;
     float sw = status * width;
 
-    nc_color col = colors[static_cast<int>( ( 1 - status ) * colors.size() )];
-    if( status == 0 ) {
-        col = colors.back();
-    } else if( ( sw < 0.5 ) && ( sw > 0 ) ) {
+    nc_color col;
+    if( !std::isfinite( status ) || colors.empty() ) {
+        col = c_red_red;
+    } else {
+        int ind = static_cast<int>( ( 1 - status ) * colors.size() );
+        ind = clamp<int>( ind, 0, colors.size() - 1 );
+        col = colors[ind];
+    }
+    if( !std::isfinite( sw ) || sw <= 0 ) {
+        result.clear();
+    } else if( sw < 0.5 ) {
         result = ":";
     } else {
         result += std::string( sw, '|' );

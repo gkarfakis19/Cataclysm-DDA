@@ -490,10 +490,10 @@ item_location game_menus::inv::disassemble( Character &p )
 std::pair<bool, std::string> satiety_bar( const int calpereffv, const Character &p )
 {
     // Arbitrary max value we will cap our vague display to. Will be lower than the actual max value, but scaling fixes that.
-    constexpr int max_cal_per_effective_vol = 1500;
-    //Scaling the values.
-    const int scaled_max = std::sqrt( max_cal_per_effective_vol ) / 4;
-    const int scaled_cal = std::sqrt( calpereffv ) / 4;
+    constexpr float max_cal_per_effective_vol = 1500.0f;
+    // Scaling the values.
+    const float scaled_max = std::sqrt( max_cal_per_effective_vol );
+    const float scaled_cal = std::sqrt( calpereffv );
     const std::pair<std::string, nc_color> nourishment_bar = get_bar(
                 scaled_cal, scaled_max, 5, true );
     // Colorize the bar.
@@ -504,7 +504,10 @@ std::pair<bool, std::string> satiety_bar( const int calpereffv, const Character 
     }
     std::string result = colorize( nourishment_bar.first, nourishment_bar.second );
     // Pad to 5 characters with dots.
-    result += std::string( 5 - nourishment_bar.first.length(), '.' );
+    const int width = utf8_width( nourishment_bar.first );
+    if( width < 5 ) {
+        result += std::string( 5 - width, '.' );
+    }
     return std::pair<bool, std::string>( false, result );
 }
 
