@@ -1571,13 +1571,13 @@ comp_selection<item_comp> Character::select_item_component( const std::vector<it
         uilist cmenu;
         // Populate options with the names of the items
         for( auto &map_ha : map_has ) { // Index 0-(map_has.size()-1)
-            std::string tmpStr = string_format( _( "%s (%d/%d nearby)" ),
+            std::string tmpStr = string_format( _( "%s (%d/%d nearby test est)" ),
                                                 item::nname( map_ha.type ),
                                                 ( map_ha.count * batch ),
                                                 item::count_by_charges( map_ha.type ) ?
                                                 map_inv.charges_of( map_ha.type, INT_MAX, filter ) :
                                                 map_inv.amount_of( map_ha.type, false, INT_MAX, filter ) );
-            cmenu.addentry( tmpStr );
+            cmenu.addentry_col(20, true, 'd', tmpStr, "CAL", std::string());
         }
         for( auto &player_ha : player_has ) { // Index map_has.size()-(map_has.size()+player_has.size()-1)
             std::string tmpStr = string_format( _( "%s (%d/%d on person)" ),
@@ -1586,7 +1586,7 @@ comp_selection<item_comp> Character::select_item_component( const std::vector<it
                                                 item::count_by_charges( player_ha.type ) ?
                                                 charges_of( player_ha.type, INT_MAX, filter ) :
                                                 amount_of( player_ha.type, false, INT_MAX, filter ) );
-            cmenu.addentry( tmpStr );
+            cmenu.addentry_desc( tmpStr , "PLACEHOOOOOOLDER");
         }
         for( auto &component : mixed ) {
             // Index player_has.size()-(map_has.size()+player_has.size()+mixed.size()-1)
